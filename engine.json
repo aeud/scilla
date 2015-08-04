@@ -4,14 +4,14 @@
   "engineFactory": "org.template.ecommercerecommendation.ECommerceRecommendationEngine",
   "datasource": {
     "params" : {
-      "appName": "INVALID_APP_NAME"
+      "appName": "luxola"
     }
   },
   "algorithms": [
     {
       "name": "ecomm",
       "params": {
-        "appName": "INVALID_APP_NAME",
+        "appName": "luxola",
         "unseenOnly": true,
         "seenEvents": ["buy", "view"],
         "similarEvents": ["view"],
