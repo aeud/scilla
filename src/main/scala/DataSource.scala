@@ -30,7 +30,7 @@ class DataSource(val dsp: DataSourceParams)
     import sqlContext.implicits._
 
     //val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("/Users/adrien/Desktop/users.json").map { case u =>
-    val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-4e18bc10-3475-11e5-8a31-f75b362d6bc5.json.gz").map { case (u) =>
+    val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/users.json.gz").map { case (u) =>
       val user = try {
         User()
       } catch {
@@ -44,7 +44,7 @@ class DataSource(val dsp: DataSourceParams)
 
     // create a RDD of (entityID, Item)
     //val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("/Users/adrien/Desktop/products.json").map { case p =>
-    val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-42f77600-3475-11e5-88c5-6d2519d18065.json.gz").map { case (p) =>
+    val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/products.json.gz").map { case (p) =>
       val item = try {
         val categories: List[String] = p(1).toString.split(",").map(_.trim).toList
         Item(categories = Option(categories), account = p(2).toString, hidden = (p(3) == true))
@@ -58,7 +58,7 @@ class DataSource(val dsp: DataSourceParams)
     }.cache()
 
     //val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/views.json").map { case v =>
-    val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-efcac610-3480-11e5-acee-e5fc8720c874.json.gz").map { case v =>
+    val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/views.json.gz").map { case v =>
       try {
         ViewEvent(
           user = v(0).toString,
@@ -74,7 +74,7 @@ class DataSource(val dsp: DataSourceParams)
     }.cache()
 
     //val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/buys.json").map { case v =>
-    val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-efcac610-3480-11e5-acee-e5fc8720c874.json.gz").map { case v =>
+    val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/purchases.json.gz").map { case v =>
       try {
         BuyEvent(
           user = v(0).toString,
