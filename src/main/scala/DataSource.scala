@@ -25,81 +25,69 @@ class DataSource(val dsp: DataSourceParams)
   def readTraining(sc: SparkContext): TrainingData = {
 
     // create a RDD of (entityID, User)
-    val usersRDD: RDD[(String, User)] = PEventStore.aggregateProperties(
-      appName = dsp.appName,
-      entityType = "user"
-    )(sc).map { case (entityId, properties) =>
+    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+    import sqlContext.implicits._
+
+    //val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("/Users/adrien/Desktop/users.json").map { case u =>
+    val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-4e18bc10-3475-11e5-8a31-f75b362d6bc5.json.gz").map { case (u) =>
       val user = try {
         User()
       } catch {
         case e: Exception => {
-          logger.error(s"Failed to get properties ${properties} of" +
-            s" user ${entityId}. Exception: ${e}.")
+          logger.error(s"Exception: ${e}.")
           throw e
         }
       }
-      (entityId, user)
+      (u(0).toString, user)
     }.cache()
 
     // create a RDD of (entityID, Item)
-    val itemsRDD: RDD[(String, Item)] = PEventStore.aggregateProperties(
-      appName = dsp.appName,
-      entityType = "item"
-    )(sc).map { case (entityId, properties) =>
+    //val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("/Users/adrien/Desktop/products.json").map { case p =>
+    val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-42f77600-3475-11e5-88c5-6d2519d18065.json.gz").map { case (p) =>
       val item = try {
-        // Assume categories is optional property of item.
-        Item(categories = properties.getOpt[List[String]]("categories"))
+        val categories: List[String] = p(1).toString.split(",").map(_.trim).toList
+        Item(categories = Option(categories), account = p(2).toString, hidden = (p(3) == true))
       } catch {
         case e: Exception => {
-          logger.error(s"Failed to get properties ${properties} of" +
-            s" item ${entityId}. Exception: ${e}.")
+          logger.error(s"Exception: ${e}.")
           throw e
         }
       }
-      (entityId, item)
+      (p(0).toString, item)
     }.cache()
 
-    val eventsRDD: RDD[Event] = PEventStore.find(
-      appName = dsp.appName,
-      entityType = Some("user"),
-      eventNames = Some(List("view", "buy")),
-      // targetEntityType is optional field of an event.
-      targetEntityType = Some(Some("item")))(sc)
-      .cache()
-
-    val viewEventsRDD: RDD[ViewEvent] = eventsRDD
-      .filter { event => event.event == "view" }
-      .map { event =>
-        try {
-          ViewEvent(
-            user = event.entityId,
-            item = event.targetEntityId.get,
-            t = event.eventTime.getMillis
-          )
-        } catch {
-          case e: Exception =>
-            logger.error(s"Cannot convert ${event} to ViewEvent." +
-              s" Exception: ${e}.")
-            throw e
+    //val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/views.json").map { case v =>
+    val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-efcac610-3480-11e5-acee-e5fc8720c874.json.gz").map { case v =>
+      try {
+        ViewEvent(
+          user = v(0).toString,
+          item = v(1).toString,
+          t = v(2).toString.toLong
+        )
+      } catch {
+        case e: Exception => {
+          logger.error(s"Exception: ${e}.")
+          throw e
         }
       }
+    }.cache()
 
-    val buyEventsRDD: RDD[BuyEvent] = eventsRDD
-      .filter { event => event.event == "buy" }
-      .map { event =>
-        try {
-          BuyEvent(
-            user = event.entityId,
-            item = event.targetEntityId.get,
-            t = event.eventTime.getMillis
-          )
-        } catch {
-          case e: Exception =>
-            logger.error(s"Cannot convert ${event} to BuyEvent." +
-              s" Exception: ${e}.")
-            throw e
+    //val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/buys.json").map { case v =>
+    val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("s3n://luxola-data-reports/bigquery/2015-07-27/results-efcac610-3480-11e5-acee-e5fc8720c874.json.gz").map { case v =>
+      try {
+        BuyEvent(
+          user = v(0).toString,
+          item = v(1).toString,
+          t = v(2).toString.toLong
+        )
+      } catch {
+        case e: Exception => {
+          logger.error(s"Exception: ${e}.")
+          throw e
         }
       }
+    }.cache()
 
     new TrainingData(
       users = usersRDD,
@@ -112,7 +100,7 @@ class DataSource(val dsp: DataSourceParams)
 
 case class User()
 
-case class Item(categories: Option[List[String]])
+case class Item(categories: Option[List[String]], account: String, hidden: Boolean)
 
 case class ViewEvent(user: String, item: String, t: Long)
 
