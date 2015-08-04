@@ -29,9 +29,9 @@ class ECommAlgorithmTest
   val users = Map("u0" -> User(), "u1" -> User())
 
 
-  val i0 = Item(categories = Some(List("c0", "c1")))
-  val i1 = Item(categories = None)
-  val i2 = Item(categories = Some(List("c0", "c2")))
+  val i0 = Item(categories = Some(List("c0", "c1")), account = "default", hidden = false)
+  val i1 = Item(categories = None, account = "default", hidden = false)
+  val i2 = Item(categories = Some(List("c0", "c2")), account = "default", hidden = false)
 
   val items = Map(
     "i0" -> i0,
@@ -110,6 +110,7 @@ class ECommAlgorithmTest
       query = Query(
         user = "u0",
         num = 5,
+        account = "default",
         categories = Some(Set("c0")),
         whiteList = None,
         blackList = None),
@@ -132,6 +133,7 @@ class ECommAlgorithmTest
       query = Query(
         user = "u0",
         num = 5,
+        account = "default",
         categories = None,
         whiteList = None,
         blackList = None),
@@ -155,6 +157,7 @@ class ECommAlgorithmTest
       query = Query(
         user = "u0",
         num = 5,
+        account = "default",
         categories = Some(Set("c0")),
         whiteList = None,
         blackList = None),
