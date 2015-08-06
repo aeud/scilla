@@ -29,7 +29,6 @@ class DataSource(val dsp: DataSourceParams)
 
     import sqlContext.implicits._
 
-    //val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("/Users/adrien/Desktop/users.json").map { case u =>
     val usersRDD: RDD[(String, User)] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/users.json.gz").map { case (u) =>
       val user = try {
         User()
@@ -43,7 +42,6 @@ class DataSource(val dsp: DataSourceParams)
     }.cache()
 
     // create a RDD of (entityID, Item)
-    //val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("/Users/adrien/Desktop/products.json").map { case p =>
     val itemsRDD: RDD[(String, Item)] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/products.json.gz").map { case (p) =>
       val item = try {
         val categories: List[String] = p(1).toString.split(",").map(_.trim).toList
@@ -57,7 +55,6 @@ class DataSource(val dsp: DataSourceParams)
       (p(0).toString, item)
     }.cache()
 
-    //val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/views.json").map { case v =>
     val viewEventsRDD: RDD[ViewEvent] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/views.json.gz").map { case v =>
       try {
         ViewEvent(
@@ -73,7 +70,6 @@ class DataSource(val dsp: DataSourceParams)
       }
     }.cache()
 
-    //val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("/Users/adrien/Desktop/buys.json").map { case v =>
     val buyEventsRDD: RDD[BuyEvent] = sqlContext.jsonFile("s3n://luxola-ml/bigquery/abs/purchases.json.gz").map { case v =>
       try {
         BuyEvent(
