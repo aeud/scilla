@@ -16,3 +16,6 @@ cd /home/ubuntu/scilla
 
 # Destroy Spark cluster
 #yes | /home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 stop pio
+
+
+JAVA_OPTS=-Xmx16g /home/ubuntu/PredictionIO/bin/pio train -- --master spark://ec2-52-3-89-72.compute-1.amazonaws.com:7077 --executor-memory 13 --driver-memory 20
