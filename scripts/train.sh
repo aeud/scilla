@@ -9,7 +9,7 @@ executor_memory="13"
 cd /home/ubuntu/scilla
 
 # Launch Spark cluster
-#/home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 -i ${key_path} start pio
+/home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 -i ${key_path} start pio
 
 # Train the model
 /home/ubuntu/PredictionIO/bin/pio train -- --master ${master_url} --executor-memory ${executor_memory} --driver-memory ${driver_memory}
@@ -18,4 +18,4 @@ cd /home/ubuntu/scilla
 #yes | /home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 stop pio
 
 
-JAVA_OPTS=-Xmx16g /home/ubuntu/PredictionIO/bin/pio train -- --master spark://ec2-52-3-89-72.compute-1.amazonaws.com:7077 --executor-memory 13 --driver-memory 20
+#JAVA_OPTS=-Xmx16g /home/ubuntu/PredictionIO/bin/pio train -- --master spark://ec2-52-3-89-72.compute-1.amazonaws.com:7077 --executor-memory 13 --driver-memory 20
