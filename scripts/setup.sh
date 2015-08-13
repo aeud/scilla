@@ -15,3 +15,6 @@ yes | /home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 destroy pio
 
 # Launch Spark cluster
 /home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 -k spark -i ${key_path} -s ${nodes} --instance-type=${instance_type} --master-instance-type=${master_instance_type} --copy-aws-credentials --vpc-id=${aws_vpc} --subnet-id=${aws_subnet} --region=${aws_region} --zone=${aws_zone} --hadoop-major-version=yarn --no-ganglia launch pio
+
+# Stop the cluster
+yes | /home/ubuntu/PredictionIO/vendors/spark-1.4.1/ec2/spark-ec2 stop pio
