@@ -3,7 +3,7 @@
 key_path="/home/ubuntu/spark.pem"
 master_url="spark://ec2-52-3-89-72.compute-1.amazonaws.com:7077"
 driver_memory="20"
-executor_memory="13"
+executor_memory="25"
 
 # Go into working folder
 cd /home/ubuntu/scilla

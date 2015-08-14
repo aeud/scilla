@@ -3,9 +3,9 @@
 key_path="/home/ubuntu/spark.pem"
 aws_region="us-east-1"
 aws_zone="us-east-1c"
-nodes="3"
-instance_type="m3.xlarge"
-master_instance_type="m3.medium"
+nodes="2"
+instance_type="c4.4xlarge"
+master_instance_type="c4.xlarge"
 aws_vpc="vpc-c1b6faa4"
 aws_subnet="subnet-c51fa79c"
 
