@@ -45,9 +45,15 @@
 require "net/http"
 require 'uri'
 
+# Connection to Scilla
 client = PredictionIO::EngineClient.new('http://scilla.aprils.ml')
+# Ask for recommendation for user_id = 1 &amp; account = 'default'
 response = client.send_query('user' =&gt; 'd1', 'num' =&gt; 4, 'account' =&gt; 'default')
+
+# Print
 puts response
+
+# {"itemScores"=&gt;[{"item"=&gt;"d1115", "score"=&gt;1.061630775156563}, {"item"=&gt;"d1534", "score"=&gt;1.057689466303359}, {"item"=&gt;"d2609", "score"=&gt;1.054622587505051}, {"item"=&gt;"d769", "score"=&gt;1.0544517261607458}]}
 </code></pre>
 
 <p>The 3 required parameters are <code>user</code>, which is (in lower case) the first letter of the account (<code>d</code> for <code>default</code>, <code>t</code> for <code>thailand</code> and <code>i</code> for <code>indonesia</code>), concatenated to the <code>user_id</code> from the linked database. <code>account</code> is an item of the list <code>'default', 'thailand', 'indonesia'</code> and <code>num</code> is the number of item you want the engine to answer.</p>
