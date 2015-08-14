@@ -25,7 +25,34 @@
 <h2>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
-<p>Please refer to <a href="http://docs.prediction.io/templates/ecommercerecommendation/quickstart/">http://docs.prediction.io/templates/ecommercerecommendation/quickstart/</a></p>
+<p>Please refer to <a href="http://docs.prediction.io/templates/ecommercerecommendation/quickstart/">http://docs.prediction.io/templates/ecommercerecommendation/quickstart/</a> for the engine configuration.</p>
+
+<h2>
+<a id="api-integration" class="anchor" href="#api-integration" aria-hidden="true"><span class="octicon octicon-link"></span></a>API integration</h2>
+
+<p>The easiest way to integrate Scilla from the main applications is to use the gem provided by PredictionIO. Here is there Github repo: <a href="https://github.com/PredictionIO/PredictionIO-Ruby-SDK">https://github.com/PredictionIO/PredictionIO-Ruby-SDK</a></p>
+
+<pre><code>gem install predictionio
+</code></pre>
+
+<p>To access the server, please register the allowed IPs, sending me an email to <a href="mailto:adrien.eudes@luxola.com">adrien.eudes@luxola.com</a>.</p>
+
+<p>The Scilla PredictionIO URL is the following: <a href="http://scilla.aprils.ml">http://scilla.aprils.ml</a></p>
+
+<p>Here is a quick Ruby script:</p>
+
+<pre><code>require 'predictionio'
+require "net/http"
+require 'uri'
+
+client = PredictionIO::EngineClient.new('http://scilla.aprils.ml')
+response = client.send_query('user' =&gt; 'd1', 'num' =&gt; 4, 'account' =&gt; 'default')
+puts response
+</code></pre>
+
+<p>The 3 required parameters are <code>user</code>, which is (in lower case) the first letter of the account (d for default, t for thailand and i for indonesia), concatenated to the user_id from the linked database. <code>account</code> is an item of the list <code>'default', 'thailand', 'indonesia'</code> and `num' is the number of item you want the engine to answer.</p>
+
+<p>Have fun</p>
 
 <h2>
 <a id="versions" class="anchor" href="#versions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Versions</h2>
