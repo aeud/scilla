@@ -1,5 +1,7 @@
 #!/bin/bash
 
+su ubuntu
+
 # Set up Scilla
 cd /home/ubuntu
 rm -rf scilla
