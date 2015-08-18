@@ -1,12 +1,8 @@
 #!/bin/bash
 
-su ubuntu
-
 # Set up Scilla
-cd /home/ubuntu
-rm -rf scilla
-yes | git clone git@github.com:project-aprils/scilla.git
-cd scilla
+cd /home/ubuntu/scilla
+git pull
 /home/ubuntu/PredictionIO/bin/pio build --verbose
 
 # Configure proxy
