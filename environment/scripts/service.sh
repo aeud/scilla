@@ -2,7 +2,7 @@
 
 case "$1" in
     start)
-        bash /home/ubuntu/scilla/environment/scripts/deploy.sh
+        bash /home/ubuntu/scilla/environment/scripts/deploy.sh >> /home/ubuntu/log/pio.log &>> /home/ubuntu/log/pio-err.log
         ;;
 esac
 
