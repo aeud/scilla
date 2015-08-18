@@ -8,6 +8,7 @@ bash -c "$(curl -s https://install.prediction.io/install.sh)"
 
 # Set up Scilla
 cd /home/ubuntu
+rm -rf scilla
 git clone git@github.com:project-aprils/scilla.git
 cd scilla
 /home/ubuntu/PredictionIO/bin/pio build --verbose
@@ -19,6 +20,7 @@ sudo service nginx restart
 
 # Set up Scilla as a service
 sudo cp /home/ubuntu/scilla/environment/scripts/service.sh /etc/init.d/scilla
+sudo update-rc.d scilla defaults
 
 # Launch Scilla
 sudo service scilla start
