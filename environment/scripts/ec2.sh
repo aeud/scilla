@@ -20,6 +20,7 @@ sudo service nginx restart
 
 # Set up Scilla as a service
 sudo cp /home/ubuntu/scilla/environment/scripts/service.sh /etc/init.d/scilla
+sudo update-rc.d -f scilla remove
 sudo update-rc.d scilla defaults
 
 # Launch Scilla
